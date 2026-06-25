@@ -32,6 +32,9 @@ public class Main {
         System.out.println("0. Выход");
         System.out.println("Выбор: ");
 
+        String choise = sc.nextLine();
+        System.out.println("Выбрано: "+choise);
+
 
 
 
