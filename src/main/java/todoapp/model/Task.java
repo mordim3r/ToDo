@@ -72,7 +72,7 @@ public class Task {
 
     @Override
     public String toString() {
-        String status = done ? "✔ ":"✖";
+        String status = done ? "DONE ":"TODO";
        return String.format("| %s | %s | %s ", createdate, title,status );   // id убрали, потому что номер задачи считаем в цикле вместо получения из бд
 
 
