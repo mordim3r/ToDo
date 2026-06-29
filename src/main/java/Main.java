@@ -5,7 +5,7 @@ import java.sql.*;
 
 
 public class Main {
-    static void main(String [] args) throws Exception {
+    public static void main(String [] args) throws Exception {
         Connection connection = DriverManager.getConnection(  //подключение
                 "jdbc:postgresql://localhost:5432/todo_db",
                 "postgres",
