@@ -1,5 +1,7 @@
 package todoapp.model;
 
+import java.time.LocalDate;
+
 public class Task {
     private int id;
 
@@ -7,12 +9,15 @@ public class Task {
 
     private boolean done;
 
+    private LocalDate createdate;
 
 
-    public Task(int id, String title, boolean done) {
+
+    public Task(int id, String title, boolean done, LocalDate createdate) {
         this.id = id;
         this.title = title;
         this.done = done;
+        this.createdate=createdate;
     }
 
 
@@ -53,10 +58,22 @@ public class Task {
 
 
 
+    public LocalDate getCreatedate() {
+        return createdate;
+    }
+
+
+
+    public void setCreatedate(LocalDate createdate) {
+        this.createdate = createdate;
+    }
+
+
+
     @Override
     public String toString() {
         String status = done ? "✔ ":"✖";
-       return String.format("%d | %s | %s", id, title,status);
+       return String.format("| %s | %s | %s ", createdate, title,status );   // id убрали, потому что номер задачи считаем в цикле вместо получения из бд
 
 
 

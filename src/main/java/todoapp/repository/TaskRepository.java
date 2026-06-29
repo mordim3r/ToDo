@@ -3,6 +3,7 @@ package todoapp.repository;
 import todoapp.model.Task;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class TaskRepository {
                 )
         ) {
             while (rs.next()) {
-                Task task = new Task(rs.getInt("id"), rs.getString("title"), rs.getBoolean("done"));
+                Task task = new Task(rs.getInt("id"), rs.getString("title"), rs.getBoolean("done"), rs.getDate("created_date").toLocalDate());
                 tasks.add(task);
             }
         }
@@ -61,7 +62,7 @@ public class TaskRepository {
             stmt.setInt(1, task.getId());
             stmt.executeUpdate();
         }
-        System.out.println("Задача " + task.getId() + " отмечена выполненной");
+        System.out.println("Задача отмечена выполненной");
     }
 
 
@@ -75,6 +76,23 @@ public class TaskRepository {
             stmt.setInt(1, task.getId());
             stmt.executeUpdate();
         }
+        System.out.println("Задача удалена");
+    }
+
+    public List<Task> unexecutedTasks()throws Exception{
+        List<Task> tasks = new ArrayList<>();
+        try (
+                Statement stmt = connection.createStatement();
+                ResultSet rs = stmt.executeQuery(           //читаем бд
+                        "SELECT * FROM tasks WHERE done = false"
+                )
+        ) {
+            while (rs.next()) {
+                Task task = new Task(rs.getInt("id"), rs.getString("title"), rs.getBoolean("done"), rs.getDate("created_date").toLocalDate());
+                tasks.add(task);
+            }
+        }
+        return tasks;
     }
 }
 

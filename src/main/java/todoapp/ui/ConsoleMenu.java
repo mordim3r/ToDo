@@ -28,15 +28,14 @@ public class ConsoleMenu {
             System.out.println("2. Добавить задачу");
             System.out.println("3. Отметить задачу выполненной");
             System.out.println("4. Удалить задачу");
+            System.out.println("5. Показать невыполненные задачи");
             System.out.println("0. Выход");
             System.out.println("Выбор: ");
             String choise = sc.nextLine();
             switch (choise) {
                 case "1" -> {
                     List<Task> tasks = repository.findAll();
-                    for (Task i : tasks) {
-                        System.out.println(i);
-                    }
+                    printTasks(tasks);
                 }
                 case "2" -> {
                     System.out.println("Название задачи");
@@ -48,38 +47,51 @@ public class ConsoleMenu {
                 }
                 case "3" -> {
                     List<Task> tasks = repository.findAll();
-                    //показываем список всегда через цикл
-                    for (Task i : tasks) {
-                        System.out.println(i);
-                    }
-                    System.out.println("Какую задачу выбрать? Введи номер: ");
-                    int id = Integer.parseInt(sc.nextLine());
-                    //markDone принимает объект Task task, поэтому и передавать нужно не просто число(id),
-                    //а объект, который соответствует этому id
-                    for (Task i : tasks) {
-                        if (i.getId() == id) {
-                            repository.markDone(i);
-                        }
+                    if (tasks.isEmpty()) {
+                        System.out.println("Задач нет");
+                        break;
+                    } else {
+                        printTasks(tasks);
+                        System.out.println("Какую задачу выбрать? Введи номер: ");
+                        int number = Integer.parseInt(sc.nextLine());
+                        Task selected = tasks.get(number - 1);   //список с нуля начинается, а не с 1
+                        repository.markDone(selected);
                     }
                 }
                 case "4" -> {
                     List<Task> tasks = repository.findAll();
-                    //показываем список всегда через цикл
-                    for (Task i : tasks) {
-                        System.out.println(i);
+                    if (tasks.isEmpty()) {
+                        System.out.println("Задач нет");
+                        break;
+                    } else {
+                        printTasks(tasks);
+                        System.out.println("Какую задачу удалить? Введи номер:");
+                        int number = Integer.parseInt(sc.nextLine());
+                        Task selected = tasks.get(number - 1);//список с нуля начинается, а не с 1
+                        repository.deleteTask(selected);
                     }
-                    System.out.println("Какую задачу удалить? Введи номер:");
-                    int id = Integer.parseInt(sc.nextLine());
-                    //deleteTask принимает объект Task task, поэтому и передавать нужно не просто число(id),
-                    //а объект, который соответствует этому id
-                    for (Task i : tasks) {
-                        if (i.getId() == id) {
-                            repository.deleteTask(i);
-                        }
-                    }
+                }
+                case "5" -> {
+                    List<Task> tasks = repository.unexecutedTasks();
+                    printTasks(tasks);
                 }
                 case "0" -> running = false;
                 default -> System.out.println("Неизвестная команда");
+            }
+        }
+    }
+
+
+
+    private void printTasks(List<Task> tasks) {
+        if (tasks.isEmpty()) {
+            System.out.println("Задач нет");
+            return;
+        } else {
+            int number = 1;
+            for (Task i : tasks) {
+                System.out.println(number + " " + i);
+                number++;
             }
         }
     }
