@@ -39,7 +39,11 @@ public class ConsoleMenu {
                 }
                 case "2" -> {
                     System.out.println("Название задачи");
-                    String title = sc.nextLine();
+                    String title = sc.nextLine().trim();
+                    if (title.isEmpty()) {
+                        System.out.println("Название задачи не может быть пустым!");
+                        break;
+                    }
                     // передаем только title, потому что индекс база проставит сама через SERIAL,
                     // а введенный проигнорирует и boolean в базе по умолчанию false
                     Task task = new Task(title);
@@ -52,10 +56,16 @@ public class ConsoleMenu {
                         break;
                     } else {
                         printTasks(tasks);
-                        System.out.println("Какую задачу выбрать? Введи номер: ");
-                        int number = Integer.parseInt(sc.nextLine());
-                        Task selected = tasks.get(number - 1);   //список с нуля начинается, а не с 1
-                        repository.markDone(selected);
+                        System.out.println("Какую задачу выбрать? Введите номер: ");
+                        try {
+                            int number = Integer.parseInt(sc.nextLine());
+                            Task selected = tasks.get(number - 1);   //список с нуля начинается, а не с 1
+                            repository.markDone(selected);
+                        } catch (IndexOutOfBoundsException e) {
+                            System.out.println("Задачи с таким номером нет. Введите правильный номер");
+                        } catch (NumberFormatException e) {
+                            System.out.println("Введите число!");
+                        }
                     }
                 }
                 case "4" -> {
@@ -65,10 +75,16 @@ public class ConsoleMenu {
                         break;
                     } else {
                         printTasks(tasks);
-                        System.out.println("Какую задачу удалить? Введи номер:");
-                        int number = Integer.parseInt(sc.nextLine());
-                        Task selected = tasks.get(number - 1);//список с нуля начинается, а не с 1
-                        repository.deleteTask(selected);
+                        System.out.println("Какую задачу удалить? Введите номер:");
+                        try {
+                            int number = Integer.parseInt(sc.nextLine());
+                            Task selected = tasks.get(number - 1);//список с нуля начинается, а не с 1
+                            repository.deleteTask(selected);
+                        } catch (IndexOutOfBoundsException e) {
+                            System.out.println("Задачи с таким номером нет. Введите правильный номер");
+                        } catch (NumberFormatException e) {
+                            System.out.println("Введите число!");
+                        }
                     }
                 }
                 case "5" -> {
