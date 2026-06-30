@@ -65,6 +65,19 @@ public class TaskRepository {
         System.out.println("Задача отмечена выполненной");
     }
 
+    public void renameTask(Task task, String newTitle) throws Exception{
+        try(
+        PreparedStatement stmt = connection.prepareStatement(
+                "UPDATE tasks SET title = ? WHERE id= ?"
+        )){
+            stmt.setString(1, newTitle);// ← первый ? это title
+            stmt.setInt(2, task.getId());     // ← второй ? это id
+            stmt.executeUpdate();
+
+        }
+        System.out.println("Задача переименована");
+    }
+
 
 
     public void deleteTask(Task task) throws Exception {

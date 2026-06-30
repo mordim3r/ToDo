@@ -29,6 +29,7 @@ public class ConsoleMenu {
             System.out.println("3. Отметить задачу выполненной");
             System.out.println("4. Удалить задачу");
             System.out.println("5. Показать невыполненные задачи");
+            System.out.println("6. Переименовать задачу");
             System.out.println("0. Выход");
             System.out.println("Выбор: ");
             String choise = sc.nextLine();
@@ -90,6 +91,24 @@ public class ConsoleMenu {
                 case "5" -> {
                     List<Task> tasks = repository.unexecutedTasks();
                     printTasks(tasks);
+                }
+                case "6"-> {
+                    List<Task> tasks = repository.findAll();
+                    printTasks(tasks);
+                    System.out.println("Какую задачу переименовать? Введите номер");
+                    try{
+                        int number = Integer.parseInt(sc.nextLine());
+                        Task selected = tasks.get(number - 1);//список с нуля начинается, а не с 1
+                        System.out.println("Введите новое название");
+                        String title = sc.nextLine();
+                        repository.renameTask(selected, title);
+
+                    }catch (NumberFormatException e ){
+                        System.out.println("Введите число!");
+                    }catch (IndexOutOfBoundsException e){
+                        System.out.println("Задач с таким номером нет. Введите правильный номер");
+                    }
+
                 }
                 case "0" -> running = false;
                 default -> System.out.println("Неизвестная команда");
