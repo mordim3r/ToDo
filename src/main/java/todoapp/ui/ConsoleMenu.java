@@ -94,6 +94,10 @@ public class ConsoleMenu {
                 }
                 case "6"-> {
                     List<Task> tasks = repository.findAll();
+                    if (tasks.isEmpty()) {
+                        System.out.println("Задач нет");
+                        break;
+                    }
                     printTasks(tasks);
                     System.out.println("Какую задачу переименовать? Введите номер");
                     try{
